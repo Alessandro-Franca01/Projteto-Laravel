@@ -18,14 +18,11 @@ Route::get('/', function () {
     return view('welcome'); // Esse returno  da função deve ser outro metodo que redireciona para a pagina 'welcome'
 });
 
-# Rota para testes: FUNCIONANDO!
-Route::get('/teste', function () {
-    return view('teste'); 
-});
-
 # Rota usando um controller no lugar da função: Testar!
 //Route::get('/teste2', 'BookController@index');
 
 # Rota do tipo RESOURCER: FUNCIONANDO!
-Route::resource('/book', 'BookController'); // Deu certo!!
+Route::resource('/book', 'BookController');
+
+
 

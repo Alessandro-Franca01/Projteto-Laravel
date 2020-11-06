@@ -4,6 +4,7 @@
         <img src="./img/icone_tb2.png" width="30" height="30">
         Tabela de Livros
     </a>
+    <!-- Essa "uri" é que vai chamar o metodo create no controller -->
     <a href="{{url("book/create")}}">
         <button class="btn btn-success">Cadastrar Livro</button>
     </a>

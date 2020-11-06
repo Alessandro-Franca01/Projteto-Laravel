@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+# Não estou entendendo bem esses "importes"
+use App\Http\Requests\BookRequest;
 use App\Models\ModelBooks;
 use App\User;
 
@@ -11,7 +13,7 @@ class BookController extends Controller{
     private $objUser;
     private $objBook;
 
-    // Esse construtor vai receber os objetos do banco de dados diretamente: Como ?
+    // Com esse construtor vou acessar os dados de books e users: Funcionando
     function __construct(){
         $this->objUser = new User();
         $this->objBook = new ModelBooks();
@@ -26,9 +28,6 @@ class BookController extends Controller{
      # Usando o controler e testando umas propriedades
     public function index()
     {
-        // Passar o caminho desda do diretorio "view" como "./"
-        //return view('./templates/tabela');
-        
         #  Testando consulta com relacionamento entre tabelas: FUNCIONANDO!
         //dd($this->objUser->find(1)->relModelBook);
 
@@ -38,15 +37,15 @@ class BookController extends Controller{
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Metodo create está funcionado normalmente:
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        // Redirecionar para o formulario
-        return view('criacao');
-        //echo '<h1> HELLO WORLD</h1>'; // FUNCIONANDO!
+        $users = $this->objUser->all();
+        //dd($users);
+        return view('./criacao', \compact('users'));
     }
 
     /**
@@ -55,9 +54,19 @@ class BookController extends Controller{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+     // Metodo para receber os dados do Post e salvar no banco de dados
+    public function store(BookRequest $request)
     {
-        //
+        // Esse metodo create do objBook não é da classe controller, e sim do modelo!
+        // Falta fazer a implementação da validação!!1
+        $this->objBook->create([
+            'titulo' => $request->titulo,
+            'id_user' => $request->id_user,
+            'paginas' => $request->paginas,
+            'preco' => $request->preco
+        ]);
+        
     }
 
     /**
@@ -75,14 +84,17 @@ class BookController extends Controller{
     }
 
     /**
-     * Show the form for editing the specified resource.
+     *  Esse EDIT para ser o metodo que vai ser mandado a principio
+     *  Depois vai ser usado o metodo UPDATE "PUT" para fazer a alteração no banco de dados
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        $book=$this->objBook->find($id);
+        $users=$this->objUser->all();
+        return view('criacao', compact('book','users'));
     }
 
     /**
@@ -94,11 +106,17 @@ class BookController extends Controller{
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->objBook->where(['id'=>$id])->update([
+            'titulo' => $request->titulo,
+            'id_user' => $request->id_user,
+            'paginas' => $request->paginas,
+            'preco' => $request->preco
+        ]);
+        return \redirect('book');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Não fazer ainda por causa do conhecimento em js:
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

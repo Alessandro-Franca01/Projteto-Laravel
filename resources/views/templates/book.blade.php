@@ -33,11 +33,11 @@
           <td>{{$books->preco}}</td>
           <td>{{$books->paginas}}</td>
           <td>
-          <!-- Criando o link passando o ID: FUNCIONANDO, nao esta chamando o metodo show! -->
+          <!-- Links -->
             <a href="{{url("book/$books->id")}}">
               <button class="btn btn-dark">Visualizar</button>
             </a>
-            <a href="#">
+            <a href="{{url("book/$books->id/edit")}}">
               <button class="btn btn-primary">Alterar</button>
             </a>
             <a href="#">
